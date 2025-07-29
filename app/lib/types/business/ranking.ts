@@ -4,13 +4,9 @@ import { GitHubUsernameSchema } from "../models";
 import { GITHUB_LIMITS } from "~/lib/constants";
 
 export const DepthSchema = z
-  .number()
+  .number("Depth must be a number")
   .positive("Depth must be a positive number")
   .int("Depth must be a whole number")
-  .min(
-    GITHUB_LIMITS.MIN_FOLLOWER_DEPTH,
-    `Minimum depth is ${GITHUB_LIMITS.MIN_FOLLOWER_DEPTH}`,
-  )
   .max(
     GITHUB_LIMITS.MAX_FOLLOWER_DEPTH,
     `Maximum allowed depth is ${GITHUB_LIMITS.MAX_FOLLOWER_DEPTH}`,
