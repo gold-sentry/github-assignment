@@ -29,12 +29,9 @@ User D → Followers: K
 
 ### Architecture & Design Principles
 
-This solution prioritizes **scalability**, **maintainability**, and **separation of concerns**:
-
 #### 🏗️ **Modular Architecture**
 
 - **Service Layer**: GitHub API integration with mock data fallback
-- **Data Layer**: Efficient follower graph traversal algorithms
 - **UI Layer**: React components with clean separation
 
 #### ⚡ **Performance Optimizations**

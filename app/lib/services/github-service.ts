@@ -7,7 +7,6 @@ import {
   SortOptions,
   UserDetails,
   GitHubUsernameSchema,
-  GitHubUserSchema,
   DepthSchema,
   PaginationParamsSchema,
 } from "../types";
@@ -58,15 +57,33 @@ export class GitHubService implements GitHubRepository {
       throw new UserNotFoundError(username);
     }
 
-    const allUsers = this.collectAllUsers(username, depth);
-    const sortedUsers = this.calculateRanksForUsers(
-      allUsers,
-      depth,
-      sortOptions,
-    );
+    const { users, ranks } = this.getUserNetwork(username, depth);
+    const sortedUsers = this.buildUserDetailsWithRanks(users, ranks, sortOptions);
 
     return this.paginateResults(sortedUsers, page, perPage);
   }
+
+  private buildUserDetailsWithRanks(
+    users: Map<string, GitHubUser>,
+    ranks: Map<string, number>,
+    sortOptions?: SortOptions,
+  ): UserDetails[] {
+    const usersWithRanks: UserDetails[] = [];
+
+    for (const [username, user] of users) {
+      const followersRank = ranks.get(username) ?? 0;
+
+      const userDetails = UserDetails.parse({
+        ...user,
+        followersRank,
+      });
+
+      usersWithRanks.push(userDetails);
+    }
+
+    return this.sortUsers(usersWithRanks, sortOptions);
+  }
+
 
   private validateInputs(
     username: string,
@@ -87,82 +104,52 @@ export class GitHubService implements GitHubRepository {
     }
   }
 
-  private calculateFollowersRank(
-    username: string,
+  private traverseUser(
+    currentUsername: string,
     depth: number,
-    visited = new Set<string>(),
+    allUsers: Map<string, GitHubUser>,
+    visited: Set<string>,
+    userRanks: Map<string, number>
   ): number {
-    if (depth === 0 || visited.has(username.toLowerCase())) {
-      return 0;
+    const normalizedName = currentUsername.toLowerCase();
+
+    if (depth < 0 || visited.has(normalizedName)) {
+      return userRanks.get(normalizedName) ?? 0;
     }
 
-    visited.add(username.toLowerCase());
-    const followerUsernames = this.dataAccess.getFollowerUsernames(username);
-    let rank = followerUsernames.length;
+    visited.add(normalizedName);
+    const user = this.dataAccess.findUser(currentUsername);
 
-    for (const followerUsername of followerUsernames) {
-      rank += this.calculateFollowersRank(followerUsername, depth - 1, visited);
+    if (!user) return 0;
+
+    allUsers.set(normalizedName, user);
+
+    let totalRank = 0;
+
+    if (depth > 0) {
+      const followers = this.dataAccess.getFollowerUsernames(currentUsername);
+      totalRank = followers.length;
+
+      for (const followerName of followers) {
+        totalRank += this.traverseUser(followerName, depth - 1, allUsers, visited, userRanks);
+      }
     }
 
-    return rank;
+    userRanks.set(normalizedName, totalRank);
+    return totalRank;
   }
 
-  private collectAllUsers(
+  private getUserNetwork(
     username: string,
     maxDepth: number,
-  ): Map<string, GitHubUser> {
+  ): { users: Map<string, GitHubUser>; ranks: Map<string, number> } {
     const allUsers = new Map<string, GitHubUser>();
     const visited = new Set<string>();
+    const userRanks = new Map<string, number>();
 
-    const collect = (currentUsername: string, currentDepth: number): void => {
-      if (currentDepth < 0 || visited.has(currentUsername.toLowerCase())) {
-        return;
-      }
+    this.traverseUser(username, maxDepth, allUsers, visited, userRanks);
 
-      visited.add(currentUsername.toLowerCase());
-      const user = this.dataAccess.findUser(currentUsername);
-      if (!user) return;
-
-      // Validate user data with Zod (showcases runtime type safety)
-      try {
-        const validatedUser = GitHubUserSchema.parse(user);
-        allUsers.set(currentUsername.toLowerCase(), validatedUser);
-      } catch (error) {
-        console.warn(`Invalid user data for ${currentUsername}:`, error);
-        return;
-      }
-
-      if (currentDepth > 0) {
-        const followerUsernames =
-          this.dataAccess.getFollowerUsernames(currentUsername);
-        followerUsernames.forEach((name) => collect(name, currentDepth - 1));
-      }
-    };
-
-    collect(username, maxDepth);
-    return allUsers;
-  }
-
-  private calculateRanksForUsers(
-    users: Map<string, GitHubUser>,
-    depth: number,
-    sortOptions?: SortOptions,
-  ): UserDetails[] {
-    const usersWithRanks: UserDetails[] = [];
-
-    for (const [username, user] of users) {
-      const followersRank = this.calculateFollowersRank(username, depth);
-
-      // Validate the final UserDetails object
-      const userDetails = UserDetails.parse({
-        ...user,
-        followersRank,
-      });
-
-      usersWithRanks.push(userDetails);
-    }
-
-    return this.sortUsers(usersWithRanks, sortOptions);
+    return { users: allUsers, ranks: userRanks };
   }
 
   private sortUsers(
