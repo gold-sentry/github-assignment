@@ -7,7 +7,7 @@ headers = []
 [functions."*"]
 
 [build]
-publish = "/Users/josh/Documents/assignment-github-app/build/client"
+publish = "/Users/joshuaalonge/Documents/github-assignment/build/client"
 publishOrigin = "config"
 commandOrigin = "config"
 command = "npm run build"

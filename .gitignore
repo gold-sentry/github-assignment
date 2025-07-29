@@ -65,3 +65,5 @@ Desktop.ini
 # If you have custom config files that should not be committed
 # remix.config.local.js
 # vite.config.local.js
+# Local Netlify folder
+.netlify

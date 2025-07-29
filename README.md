@@ -210,5 +210,5 @@ This codebase demonstrates:
 
 ### Testing Recommendations
 
-- **Deplopyment Link**: https://spectacular-peony-540cd9.netlify.app/
+- **Deplopyment Link**: https://6888fc4cc5be424175bb8286--spectacular-meringue-7e428a.netlify.app/
 - **Important Note**: In other to simplify the deployment we disable the SSR for the project so we can deploy as static files
