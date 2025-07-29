@@ -1,19 +1,21 @@
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 
 export const useInfiniteScroll = (callback: () => void, hasMore: boolean) => {
+  const observerRef = useRef<IntersectionObserver | null>(null);
+
   const ref = useCallback(
     (node: HTMLElement | null) => {
+      if (observerRef.current) observerRef.current.disconnect();
+      
       if (!node || !hasMore) return;
 
-      const observer = new IntersectionObserver(([entry]) => {
+      observerRef.current = new IntersectionObserver(([entry]) => {
         if (entry.isIntersecting) {
           callback();
         }
       });
 
-      observer.observe(node);
-
-      return () => observer.disconnect();
+      observerRef.current.observe(node);
     },
     [callback, hasMore],
   );

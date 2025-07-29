@@ -209,3 +209,8 @@ This codebase demonstrates:
 
 - **Deplopyment Link**: https://6888fc4cc5be424175bb8286--spectacular-meringue-7e428a.netlify.app/
 - **Important Note**: In other to simplify the deployment we disable the SSR for the project so we can deploy as static files
+
+
+### Notes 
+In the hooks section i have used a simple scroll on view infinite loader i believe that given (assumption) a small set of data of about 2- 3k that is relatively okay but ideal options include virtual scrolling
+- **Windowing**: Libraries like react-window or @tanstack/virtual could be integrated
