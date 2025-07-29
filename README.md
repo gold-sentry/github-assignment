@@ -36,7 +36,7 @@ User D → Followers: K
 
 #### ⚡ **Performance Optimizations**
 
-- Virtual scrolling for large datasets
+- Infinite scrolling for large datasets 
 - Efficient graph traversal with cycle detection
 
 ### Core Features
@@ -49,11 +49,9 @@ User D → Followers: K
   - Account creation date
   - Calculated followers-rank score
 
-#### 🔍 **Advanced Sorting & Filtering**
+#### 🔍 **Sorting & Filtering**
 
 - Sort by: Username (A-Z), Creation Date, Followers Rank
-- Real-time search functionality
-- Filter by date ranges and follower thresholds
 
 #### 📄 **Pagination & Performance**
 
@@ -108,16 +106,14 @@ Since GitHub API has rate limits, the application includes:
 
 - **Realistic mock data** that simulates GitHub API responses
 - **Configurable network depth** for testing complex scenarios
-- **Edge case simulation** (users with no followers, API errors, etc.)
 - **Performance testing data** with large follower networks
 
 ## 🛠️ Technology Stack
 
-- **Frontend Framework**: React 18 with TypeScript
+- **Frontend Framework**: React with TypeScript
 - **Build Tool**: Vite for fast development and optimized builds
-- **Styling**: Tailwind CSS for responsive, utility-first design
+- **Styling**: Tailwind CSS for responsive
 - **Testing**: Jest + React Testing Library
-- **Code Quality**: ESLint + Prettier + Husky pre-commit hooks
 
 ## 📦 Project Structure
 
