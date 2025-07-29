@@ -4,6 +4,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-store/ # If you use pnpm
+build/
 
 # macOS
 .DS_Store
