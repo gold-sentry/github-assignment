@@ -105,14 +105,6 @@ const calculateFollowersRank = async (username, depth, visited = new Set()) => {
 };
 ```
 
-#### 🎨 **Component Architecture**
-
-- `<RankingDashboard />` - Main container component
-- `<UserCard />` - Individual user display component
-- `<SortingControls />` - Sorting and filtering interface
-- `<PaginationControls />` - Page navigation
-- `<SearchInput />` - Real-time search functionality
-
 ### 🧪 Mock Data Strategy
 
 Since GitHub API has rate limits, the application includes:
