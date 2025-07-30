@@ -210,3 +210,6 @@ This codebase demonstrates:
 ### Notes 
 In the hooks section i have used a simple scroll on view infinite loader i believe that given (assumption) a small set of data of about 2- 3k that is relatively okay but ideal options include virtual scrolling
 - **Windowing**: Libraries like react-window or @tanstack/virtual could be integrated
+- **Logging**: This project does not use any form of logging its rather intentional as i think given its just a simple assignment did not want to have logger installed.
+- **DB Considerartion**: I was thinking in an actual use case the entire data could be represented by a knowledge database that supports reading this kinds of relationship
+- **UI Considerartion**: I was thinking that having a drop down for sorting just few options could be a non-intuitive to the user (debatable really).
