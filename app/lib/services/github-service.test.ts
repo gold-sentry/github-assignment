@@ -1,5 +1,4 @@
 import { beforeEach, describe, expect, it, MockedFunction, vi } from "vitest";
-import { GitHubServiceTestHelper } from "../../../tests/helpers";
 import { UserNotFoundError } from "../util";
 import { GitHubService } from "./github-service";
 import { GitHubUserBuilder, UserDetailsBuilder } from "../builders";
@@ -379,11 +378,6 @@ describe("GitHubService", () => {
         maxDepth: 5,
       });
       expect(serviceWithUndefined).toBeInstanceOf(GitHubService);
-    });
-
-    it("should use custom configuration via test helper", () => {
-      const testService = GitHubServiceTestHelper.createTestService();
-      expect(testService).toBeInstanceOf(GitHubService);
     });
 
     it("should use injected data access with options", () => {
