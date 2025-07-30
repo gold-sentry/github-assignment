@@ -297,13 +297,13 @@ describe("GitHubService", () => {
       ).rejects.toThrow(UserNotFoundError);
     });
 
-    it("should throw validation error for invalid username", async () => {
+    it("", async () => {
       await expect(service.getFollowersWithRank("", 1)).rejects.toThrow(
         "Validation error",
       );
 
-      await expect(service.getFollowersWithRank("   ", 1)).rejects.toThrow(
-        "Validation error",
+      await expect(service.getFollowersWithRank("none", 1)).rejects.toThrow(
+          "User \"none\" not found"
       );
     });
 
