@@ -10,20 +10,6 @@ vi.mock("../../lib/utils/network-simulator", () => ({
   },
 }));
 
-type MockGitHubDataAccess = {
-  findUser: ReturnType<typeof vi.fn>;
-  getFollowerUsernames: ReturnType<typeof vi.fn>;
-  userExists: ReturnType<typeof vi.fn>;
-  getFollowerCount: ReturnType<typeof vi.fn>;
-};
-
-const createMockDataAccess = (): MockGitHubDataAccess => ({
-  findUser: vi.fn(),
-  getFollowerUsernames: vi.fn(),
-  userExists: vi.fn(),
-  getFollowerCount: vi.fn(),
-});
-
 describe("GitHubService", () => {
   let service: GitHubService;
   let mockDataAccess: {
