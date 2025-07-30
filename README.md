@@ -147,7 +147,7 @@ src/
 
 ```bash
 # Clone the repository
-git clone [https://github.com/sentry-josh/assignment-github-app.git]
+git clone [https://github.com/gold-sentry/github-assignment.git]
 cd github-ranking-report
 
 # Install dependencies
@@ -205,6 +205,9 @@ This codebase demonstrates:
 
 - **Deplopyment Link**: https://6888fc4cc5be424175bb8286--spectacular-meringue-7e428a.netlify.app/
 - **Important Note**: In other to simplify the deployment we disable the SSR for the project so we can deploy as static files
+- **Github link**: In other to simplify the deployment we disable the SSR for the project so we can deploy as static files
+
+
 
 
 ### Notes 
