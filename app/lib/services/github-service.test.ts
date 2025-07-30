@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, MockedFunction, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { UserNotFoundError } from "../util";
 import { GitHubService } from "./github-service";
 import { GitHubUserBuilder, UserDetailsBuilder } from "../builders";
