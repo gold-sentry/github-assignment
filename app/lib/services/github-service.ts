@@ -58,30 +58,29 @@ export class GitHubService implements GitHubRepository {
     }
 
     const { users, ranks } = this.getUserNetwork(username, depth);
-    const sortedUsers = this.buildUserDetailsWithRanks(users, ranks, sortOptions);
-
+    const userDetails = this.buildUserDetailsWithRanks(users, ranks);
+    const sortedUsers = this.sortUsers(userDetails, sortOptions);
     return this.paginateResults(sortedUsers, page, perPage);
   }
 
   private buildUserDetailsWithRanks(
     users: Map<string, GitHubUser>,
-    ranks: Map<string, number>,
-    sortOptions?: SortOptions,
+    ranks: Map<string, number>
   ): UserDetails[] {
     const usersWithRanks: UserDetails[] = [];
 
     for (const [username, user] of users) {
       const followersRank = ranks.get(username) ?? 0;
 
-      const userDetails = UserDetails.parse({
+      const userDetails = {
         ...user,
         followersRank,
-      });
+      };
 
       usersWithRanks.push(userDetails);
     }
 
-    return this.sortUsers(usersWithRanks, sortOptions);
+    return usersWithRanks;
   }
 
 
