@@ -136,6 +136,7 @@ export const useGitHubAnalysis = () => {
           ITEMS_PER_PAGE,
         );
 
+
         updateUserState(response, true);
         setCurrentPage(nextPage);
       },

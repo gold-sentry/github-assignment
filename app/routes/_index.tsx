@@ -5,7 +5,7 @@ import { AnalysisForm } from "../components/github-analyzer/AnalysisForm";
 import { StickyHeader } from "../components/github-analyzer/StickyHeader";
 import { ResultGrid } from "../components/github-analyzer/ResultGrid";
 import { useGitHubAnalysis } from "../hooks/useGitHubAnalysis";
-import { useScrollToElement } from "../hooks/useScrollToElement";
+
 
 export const meta: MetaFunction = () => {
   return [
@@ -26,32 +26,30 @@ export default function Index() {
     results,
     error,
     sortConfig,
-    displayedUsers,
+    displayedUsers, 
     hasMore,
     analyze,
     updateSort,
     loadMore,
   } = useGitHubAnalysis();
 
-  const scrollToElement = useScrollToElement();
 
   const resultsRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLDivElement>(null);
 
-  const scrollToResults = useCallback(() => {
-    scrollToElement(resultsRef.current);
-  }, [scrollToElement]);
-
-  const scrollToForm = useCallback(() => {
-    scrollToElement(formRef.current);
-  }, [scrollToElement]);
+  const scrollToElement = useCallback((element: HTMLElement | null) => {
+    element?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }, []);
 
   useEffect(() => {
     if (results && !isLoading) {
-      const timeoutId = setTimeout(scrollToResults, SCROLL_DELAY_MS);
+      const timeoutId = setTimeout(() => scrollToElement(resultsRef.current), SCROLL_DELAY_MS);
       return () => clearTimeout(timeoutId);
     }
-  }, [results, isLoading, scrollToResults]);
+  }, [results, isLoading, scrollToElement]);
 
   const hasResults = results !== null;
 
@@ -78,7 +76,7 @@ export default function Index() {
               totalUsers={results.totalUsers}
               rootUser={results.rootUser}
               depth={results.depth}
-              onSearch={scrollToForm}
+              onSearch={() => scrollToElement(formRef.current)}
             />
 
             <ResultGrid
